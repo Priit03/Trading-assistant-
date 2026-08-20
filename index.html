@@ -669,6 +669,220 @@ body{font-family:'Inter',sans-serif;}
   }
   .alarm-app .claim-btn:active{ transform:scale(0.97); }
 
+
+/* =========================
+   PREMIUM AESTHETIC LAYER
+========================= */
+
+body{
+  background:
+    radial-gradient(circle at 15% 0%, rgba(23,195,178,.055), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(23,195,178,.035), transparent 24%),
+    var(--bg);
+}
+
+.app-shell{
+  max-width:1120px;
+  padding:28px 18px 70px;
+}
+
+.topbar{
+  margin-bottom:20px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+
+.brand{
+  font-size:20px;
+  letter-spacing:-.035em;
+}
+
+.brand span{
+  text-shadow:0 0 22px rgba(23,195,178,.22);
+}
+
+.theme-btn{
+  padding:8px 11px;
+  background:rgba(255,255,255,.018);
+  backdrop-filter:blur(10px);
+  transition:.18s ease;
+}
+
+.theme-btn:hover{
+  border-color:var(--teal);
+  transform:translateY(-1px);
+}
+
+.main-tabs{
+  padding:4px;
+  gap:4px;
+  width:max-content;
+  max-width:100%;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:11px;
+}
+
+.main-tab{
+  border-color:transparent;
+  background:transparent;
+  padding:9px 14px;
+  border-radius:7px;
+  transition:.18s ease;
+}
+
+.main-tab:hover{
+  color:var(--text);
+}
+
+.main-tab.active{
+  background:var(--panel-alt);
+  border-color:var(--border);
+  box-shadow:0 2px 10px rgba(0,0,0,.12);
+}
+
+.panel{
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 4px 18px rgba(0,0,0,.055);
+  transition:border-color .18s ease, transform .18s ease;
+}
+
+.panel:hover{
+  border-color:color-mix(in srgb,var(--teal) 28%,var(--border));
+}
+
+.section-title{
+  letter-spacing:-.01em;
+}
+
+.pill,
+.side-btn,
+.toggle2,
+.preset-btn,
+input[type=number],
+input[type=text],
+.curr-select{
+  transition:border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.pill:hover,
+.side-btn:hover,
+.preset-btn:hover{
+  border-color:var(--teal) !important;
+}
+
+.pill.active{
+  box-shadow:inset 0 0 0 1px rgba(23,195,178,.08);
+}
+
+input[type=number],
+input[type=text],
+.curr-select{
+  min-height:40px;
+}
+
+input[type=number]:focus,
+input[type=text]:focus,
+.curr-select:focus{
+  box-shadow:0 0 0 3px rgba(23,195,178,.09);
+}
+
+input[type=range]{
+  cursor:pointer;
+}
+
+.ticket > .panel:first-child{
+  background:
+    linear-gradient(135deg,
+      rgba(23,195,178,.065),
+      transparent 58%),
+    var(--panel);
+}
+
+.ticket > .panel:nth-child(2){
+  box-shadow:0 8px 28px rgba(0,0,0,.09);
+}
+
+.big{
+  letter-spacing:-.035em;
+}
+
+.stat{
+  transition:.16s ease;
+}
+
+.stat:hover{
+  border-color:color-mix(in srgb,var(--teal) 25%,var(--border-soft));
+}
+
+.stat[style*="grid-column"]{
+  box-shadow:inset 0 0 20px rgba(23,195,178,.018);
+}
+
+.r-row{
+  transition:.16s ease;
+}
+
+.r-row:hover{
+  transform:translateX(2px);
+  border-color:color-mix(in srgb,var(--teal) 22%,var(--border-soft));
+}
+
+.warn{
+  box-shadow:0 4px 14px rgba(245,166,35,.06);
+}
+
+.footnote{
+  opacity:.82;
+}
+
+.alarm-app{
+  background:
+    radial-gradient(circle at 50% 0%, rgba(23,195,178,.05), transparent 34%),
+    var(--bg);
+  padding:24px;
+}
+
+.alarm-app .card{
+  border-radius:14px;
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+
+.alarm-app .ring-wrap{
+  filter:drop-shadow(0 0 16px rgba(23,195,178,.06));
+}
+
+.preset-row{
+  margin-top:7px;
+}
+
+.preset-btn{
+  opacity:.9;
+}
+
+@media(max-width:760px){
+  .app-shell{
+    padding:18px 10px 50px;
+  }
+
+  .main-tabs{
+    width:100%;
+  }
+
+  .main-tab{
+    flex:1;
+  }
+
+  .panel{
+    padding:16px;
+  }
+
+  .alarm-app{
+    padding:10px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -729,28 +943,62 @@ body{font-family:'Inter',sans-serif;}
         <div class="section-title">Capital &amp; risk</div>
 
         <div class="row">
-          <label>Total capital</label>
+
+          <label>
+            Total capital
+            <span class="val" id="capital-echo">₹5,000</span>
+          </label>
+
           <div class="inputline">
             <select class="curr-select" id="currency">
+              <option value="₹" selected>₹</option>
               <option value="$">$</option>
-              <option value="₹">₹</option>
             </select>
-            <input type="number" id="capital" placeholder="e.g. 500" min="0" step="0.01">
+
+            <input
+              type="number"
+              id="capital"
+              value="5000"
+              placeholder="5000"
+              min="0"
+              step="1"
+            >
           </div>
+
+          <div class="preset-row">
+            <button type="button" class="preset-btn" data-cap-add="1000">+ ₹1K</button>
+            <button type="button" class="preset-btn" data-cap-add="5000">+ ₹5K</button>
+            <button type="button" class="preset-btn" data-cap-add="10000">+ ₹10K</button>
+          </div>
+
         </div>
 
         <div class="row">
-          <label>Risk per trade <span class="val" id="risk-pct-echo">1%</span></label>
-          <input type="range" id="risk-slider" min="0.1" max="100" value="1" step="0.1">
-        </div>
 
-        <div class="row">
-          <label>Risk amount</label>
-          <input type="number" id="risk-amount" placeholder="auto" min="0" step="0.01">
+          <label>
+            SL loss
+            <span class="val" id="risk-pct-echo">20%</span>
+          </label>
+
+          <input
+            type="number"
+            id="risk-amount"
+            value="1000"
+            placeholder="1000"
+            min="0"
+            step="1"
+          >
+
+          <div class="preset-row">
+            <button type="button" class="preset-btn" data-loss="500">₹500</button>
+            <button type="button" class="preset-btn" data-loss="1000">₹1K</button>
+            <button type="button" class="preset-btn" data-loss="2000">₹2K</button>
+          </div>
+
         </div>
 
         <div class="meter-wrap">
-          <div class="meter-label"><span>Conservative</span><span>Aggressive</span></div>
+          <div class="meter-label"><span>Lower loss</span><span>Higher loss</span></div>
           <div class="meter">
             <div class="meter-marker" id="risk-marker" style="left:10%"></div>
           </div>
@@ -832,8 +1080,12 @@ body{font-family:'Inter',sans-serif;}
             <div class="v short" id="sl-price">—</div>
           </div>
           <div class="stat">
-            <div class="k">Risk amount</div>
+            <div class="k">SL loss</div>
             <div class="v" id="risk-out">—</div>
+          </div>
+          <div class="stat">
+            <div class="k">Total loss</div>
+            <div class="v" id="total-loss-out">—</div>
           </div>
           <div class="stat" style="grid-column:1 / -1;">
             <div class="k">Total fees (round trip)</div>
@@ -848,7 +1100,7 @@ body{font-family:'Inter',sans-serif;}
         </div>
 
         <div class="footnote">
-          Risk amount qty aur SL distance dono se calculate hota hai — fees bhi risk mein add hoti hai, isliye actual loss set risk se zyada nahi jaati. Margin, capital se zyada ho to leverage ya risk% kam karo. R-multiple table sirf risk amount pe based hai — leverage sirf margin required badalta/ghatata hai, qty risk aur SL se fix hoti hai.
+          SL loss tumhara selected loss hai. Fees uske upar add hoti hain. Total loss = SL loss + fees. Leverage sirf margin required badalta hai; quantity SL loss aur SL distance se fix hoti hai.
         </div>
       </div>
     </div>
@@ -867,9 +1119,9 @@ body{font-family:'Inter',sans-serif;}
   var $ = function(id){ return document.getElementById(id); };
 
   var entryEl = $('entry'), levSlider = $('lev-slider'), levInput = $('lev-input'),
-      capitalEl = $('capital'), riskSlider = $('risk-slider'), riskAmountEl = $('risk-amount'),
+      capitalEl = $('capital'), riskAmountEl = $('risk-amount'),
       slPointsEl = $('sl-points'), slPctEl = $('sl-pct'), commissionEl = $('commission'),
-      currencyEl = $('currency');
+      currencyEl = $('currency'), capitalEchoEl = $('capital-echo');
 
   function fmt(n, dec){
     if(!isFinite(n)) return '—';
@@ -907,26 +1159,20 @@ body{font-family:'Inter',sans-serif;}
 
   riskAmountEl.oninput = calc;
 
-  document
-    .querySelectorAll('.capital-preset')
-    .forEach(function(btn){
+  document.querySelectorAll('.preset-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.dataset.capAdd){
+        var current = parseFloat(capitalEl.value) || 0;
+        capitalEl.value = current + parseFloat(btn.dataset.capAdd);
+      }
 
-      btn.addEventListener('click', function(){
+      if(btn.dataset.loss){
+        riskAmountEl.value = parseFloat(btn.dataset.loss);
+      }
 
-        if(btn.dataset.add){
-          var current = parseFloat(capitalEl.value) || 0;
-          capitalEl.value = current + parseFloat(btn.dataset.add);
-        }
-
-        if(btn.dataset.loss){
-          riskAmountEl.value = parseFloat(btn.dataset.loss);
-        }
-
-        calc();
-
-      });
-
+      calc();
     });
+  });
 
   capitalEl.oninput = calc;
   entryEl.oninput = calc;
@@ -979,20 +1225,27 @@ body{font-family:'Inter',sans-serif;}
 
     $('entry-echo').textContent = entry ? curr + fmt(entry,2) : '—';
     $('lev-echo').textContent = lev + 'x';
+    var riskAmount =
+      parseFloat(riskAmountEl.value) || 0;
 
-    var riskPct = parseFloat(riskSlider.value) || 0;
-    $('risk-pct-echo').textContent = fmt(riskPct,1) + '%';
+    var riskPct =
+      capital > 0
+        ? (riskAmount / capital) * 100
+        : 0;
 
-    var riskAmount;
-    if(!riskEditingAmount){
-      riskAmount = capital * riskPct/100;
-      riskAmountEl.value = riskAmount ? riskAmount.toFixed(2) : '';
-    } else {
-      riskAmount = parseFloat(riskAmountEl.value) || 0;
+    $('risk-pct-echo').textContent =
+      fmt(riskPct,1) + '%';
+
+    var markerPos =
+      Math.min(100, riskPct);
+
+    $('risk-marker').style.left =
+      markerPos + '%';
+
+    if(capitalEchoEl){
+      capitalEchoEl.textContent =
+        curr + fmt(capital,0);
     }
-
-    var markerPos = Math.min(100, riskPct);
-    $('risk-marker').style.left = markerPos + '%';
 
     var slDistance = 0;
     if(state.slMode === 'points'){
@@ -1007,15 +1260,25 @@ body{font-family:'Inter',sans-serif;}
       slPrice = state.side === 'long' ? entry - slDistance : entry + slDistance;
     }
 
-    var denom = slDistance + (entry * commission * 2);
+    /*
+      Risk is SL loss BEFORE fees.
+      Total loss is SL loss + fees.
+
+      Example:
+      SL loss = ₹1,000
+      Fees = ₹50
+      Total loss = ₹1,050
+    */
     var qty = 0;
-    if(denom > 0 && riskAmount > 0){
-      qty = riskAmount / denom;
+
+    if(slDistance > 0 && riskAmount > 0){
+      qty = riskAmount / slDistance;
     }
 
     var posValue = qty * entry;
     var marginReq = lev > 0 ? posValue / lev : 0;
     var feeTotal = qty * entry * commission * 2;
+    var totalLoss = riskAmount + feeTotal;
     var effLev = capital > 0 ? posValue/capital : 0;
     var minLevNeeded = effLev > 0 ? Math.max(1, Math.ceil(effLev)) : 0;
 
@@ -1026,6 +1289,8 @@ body{font-family:'Inter',sans-serif;}
     $('margin-req').textContent = marginReq ? curr + fmt(marginReq,2) : '—';
     $('sl-price').textContent = slPrice !== null ? curr + fmt(slPrice,2) : '—';
     $('risk-out').textContent = riskAmount ? curr + fmt(riskAmount,2) : '—';
+    $('total-loss-out').textContent =
+      (riskAmount || feeTotal) ? curr + fmt(totalLoss,2) : '—';
     $('fee-out').textContent = feeTotal ? curr + fmt(feeTotal,2) : '—';
     $('eff-lev').textContent = minLevNeeded ? (minLevNeeded + 'x') + (minLevNeeded > state.maxLev ? ' (exceeds max)' : '') : '—';
 
@@ -1049,7 +1314,7 @@ body{font-family:'Inter',sans-serif;}
     var moveOut = $('move-out'), moveSub = $('move-sub');
     if(qty > 0 && riskAmount > 0){
       var targetProfit = riskAmount * targetR;
-      var movePoints = (targetProfit / qty) + (entry * commission * 2);
+      var movePoints = qty > 0 ? (targetProfit + feeTotal) / qty : 0;
       if(entry > 0){
         var movePct = (movePoints/entry)*100;
         var tpPrice = state.side === 'long' ? entry + movePoints : entry - movePoints;
@@ -1064,7 +1329,7 @@ body{font-family:'Inter',sans-serif;}
       moveSub.textContent = 'SL distance daalo — usse qty aur move dono nikalte hain';
     } else {
       moveOut.textContent = '—';
-      moveSub.textContent = 'Capital aur risk% daalo pehle';
+      moveSub.textContent = 'Capital aur SL loss daalo pehle';
     }
 
     var warn = $('warn-box');
@@ -1385,440 +1650,5 @@ startTimeInput.disabled = startNowCheckbox.checked;
 })();
 </script>
 
-<script>
-/* Position Size Calculator */
-
-(function(){
-  var state = {
-    symbol: 'ETHUSD',
-    maxLev: 100,
-    side: 'long',
-    slMode: 'points'
-  };
-
-  var $ = function(id){ return document.getElementById(id); };
-
-  var entryEl = $('entry'), levSlider = $('lev-slider'), levInput = $('lev-input'),
-      capitalEl = $('capital'), riskSlider = $('risk-slider'), riskAmountEl = $('risk-amount'),
-      slPointsEl = $('sl-points'), slPctEl = $('sl-pct'), commissionEl = $('commission'),
-      currencyEl = $('currency');
-
-  function fmt(n, dec){
-    if(!isFinite(n)) return '—';
-    return n.toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec});
-  }
-
-  function symbolPick(sym, max){
-    state.symbol = sym; state.maxLev = max;
-    $('sym-eth').classList.toggle('active', sym==='ETHUSD');
-    $('sym-btc').classList.toggle('active', sym==='BTCUSD');
-    levSlider.max = max;
-    if(parseFloat(levInput.value) > max){ levInput.value = max; levSlider.value = max; }
-    calc();
-  }
-  $('sym-eth').onclick = function(){ symbolPick('ETHUSD', 100); };
-  $('sym-btc').onclick = function(){ symbolPick('BTCUSD', 200); };
-
-  function sidePick(side){
-    state.side = side;
-    $('side-long').classList.toggle('long-active', side==='long');
-    $('side-short').classList.toggle('short-active', side==='short');
-    var badge = $('side-badge');
-    badge.textContent = side==='long' ? 'Long' : 'Short';
-    badge.className = 'badge ' + (side==='long' ? 'long' : 'short');
-    calc();
-  }
-  $('side-long').onclick = function(){ sidePick('long'); };
-  $('side-short').onclick = function(){ sidePick('short'); };
-
-  levSlider.oninput = function(){ levInput.value = levSlider.value; calc(); };
-  levInput.oninput = function(){
-    var v = Math.min(parseFloat(levInput.value)||1, state.maxLev);
-    levSlider.value = v; calc();
-  };
-
-  var riskEditingSlider = false, riskEditingAmount = false;
-  riskSlider.oninput = function(){
-    riskEditingSlider = true;
-    calc();
-    riskEditingSlider = false;
-  };
-  riskAmountEl.oninput = function(){
-    riskEditingAmount = true;
-    var cap = parseFloat(capitalEl.value) || 0;
-    var amt = parseFloat(riskAmountEl.value) || 0;
-    if(cap > 0){
-      var pct = (amt/cap)*100;
-      pct = Math.max(0.1, Math.min(100, pct));
-      riskSlider.value = pct;
-    }
-    calc();
-    riskEditingAmount = false;
-  };
-  capitalEl.oninput = calc;
-  entryEl.oninput = calc;
-  slPointsEl.oninput = calc;
-  slPctEl.oninput = calc;
-  commissionEl.oninput = calc;
-  currencyEl.onchange = calc;
-
-  var rrSlider = $('rr-slider');
-  rrSlider.oninput = function(){ $('rr-echo').textContent = fmt(parseFloat(rrSlider.value),1) + 'R'; calc(); };
-
-  $('fee-taker-btn').onclick = function(){
-    $('fee-taker-btn').classList.add('active');
-    $('fee-maker-btn').classList.remove('active');
-    $('fee-type-hint').textContent = 'taker order';
-    commissionEl.value = '0.05';
-    calc();
-  };
-  $('fee-maker-btn').onclick = function(){
-    $('fee-maker-btn').classList.add('active');
-    $('fee-taker-btn').classList.remove('active');
-    $('fee-type-hint').textContent = 'maker order';
-    commissionEl.value = '0.02';
-    calc();
-  };
-
-  $('sl-points-btn').onclick = function(){
-    state.slMode = 'points';
-    $('sl-points-btn').classList.add('active');
-    $('sl-pct-btn').classList.remove('active');
-    $('sl-points-row').style.display = '';
-    $('sl-pct-row').style.display = 'none';
-    calc();
-  };
-  $('sl-pct-btn').onclick = function(){
-    state.slMode = 'pct';
-    $('sl-pct-btn').classList.add('active');
-    $('sl-points-btn').classList.remove('active');
-    $('sl-pct-row').style.display = '';
-    $('sl-points-row').style.display = 'none';
-    calc();
-  };
-
-  function calc(){
-    var curr = currencyEl.value;
-    var entry = parseFloat(entryEl.value) || 0;
-    var lev = Math.min(parseFloat(levInput.value) || 1, state.maxLev);
-    var capital = parseFloat(capitalEl.value) || 0;
-    var commission = (parseFloat(commissionEl.value) || 0) / 100;
-
-    $('entry-echo').textContent = entry ? curr + fmt(entry,2) : '—';
-    $('lev-echo').textContent = lev + 'x';
-
-    var riskPct = parseFloat(riskSlider.value) || 0;
-    $('risk-pct-echo').textContent = fmt(riskPct,1) + '%';
-
-    var riskAmount;
-    if(!riskEditingAmount){
-      riskAmount = capital * riskPct/100;
-      riskAmountEl.value = riskAmount ? riskAmount.toFixed(2) : '';
-    } else {
-      riskAmount = parseFloat(riskAmountEl.value) || 0;
-    }
-
-    var markerPos = Math.min(100, riskPct);
-    $('risk-marker').style.left = markerPos + '%';
-
-    var slDistance = 0;
-    if(state.slMode === 'points'){
-      slDistance = parseFloat(slPointsEl.value) || 0;
-    } else {
-      var slPct = parseFloat(slPctEl.value) || 0;
-      slDistance = entry * (slPct/100);
-    }
-
-    var slPrice = null;
-    if(entry > 0 && slDistance > 0){
-      slPrice = state.side === 'long' ? entry - slDistance : entry + slDistance;
-    }
-
-    var denom = slDistance + (entry * commission * 2);
-    var qty = 0;
-    if(denom > 0 && riskAmount > 0){
-      qty = riskAmount / denom;
-    }
-
-    var posValue = qty * entry;
-    var marginReq = lev > 0 ? posValue / lev : 0;
-    var feeTotal = qty * entry * commission * 2;
-    var effLev = capital > 0 ? posValue/capital : 0;
-    var minLevNeeded = effLev > 0 ? Math.max(1, Math.ceil(effLev)) : 0;
-
-    $('qty-out').textContent = qty ? fmt(qty, qty < 1 ? 5 : 4) : '0.0000';
-    $('qty-sub').textContent = 'Quantity (' + state.symbol.replace('USD','') + ') to trade';
-
-    $('pos-value').textContent = posValue ? curr + fmt(posValue,2) : '—';
-    $('margin-req').textContent = marginReq ? curr + fmt(marginReq,2) : '—';
-    $('sl-price').textContent = slPrice !== null ? curr + fmt(slPrice,2) : '—';
-    $('risk-out').textContent = riskAmount ? curr + fmt(riskAmount,2) : '—';
-    $('fee-out').textContent = feeTotal ? curr + fmt(feeTotal,2) : '—';
-    $('eff-lev').textContent = minLevNeeded ? (minLevNeeded + 'x') + (minLevNeeded > state.maxLev ? ' (exceeds max)' : '') : '—';
-
-    var rRows = $('r-rows');
-    var multiples = [1,2,3,5,6,7];
-    var rows = '';
-    for(var i=0;i<multiples.length;i++){
-      var m = multiples[i];
-      var profit = riskAmount * m;
-      var ret = capital > 0 ? (profit/capital)*100 : 0;
-      rows += '<div class="r-row">'
-        + '<span class="rlabel">' + m + 'R</span>'
-        + '<span class="rprofit">' + (profit ? curr + fmt(profit,2) : '—') + '</span>'
-        + '<span class="rreturn">' + (capital>0 ? '+' + fmt(ret,1) + '%' : '—') + '</span>'
-        + '</div>';
-    }
-    rRows.innerHTML = rows;
-
-    var targetR = parseFloat(rrSlider.value) || 0;
-    $('rr-echo').textContent = fmt(targetR,1) + 'R';
-    var moveOut = $('move-out'), moveSub = $('move-sub');
-    if(qty > 0 && riskAmount > 0){
-      var targetProfit = riskAmount * targetR;
-      var movePoints = (targetProfit / qty) + (entry * commission * 2);
-      if(entry > 0){
-        var movePct = (movePoints/entry)*100;
-        var tpPrice = state.side === 'long' ? entry + movePoints : entry - movePoints;
-        moveOut.textContent = fmt(movePoints,2) + ' pts (' + fmt(movePct,2) + '%)';
-        moveSub.textContent = 'TP around ' + curr + fmt(tpPrice,2) + ' for ' + fmt(targetR,1) + 'R (' + curr + fmt(targetProfit,2) + ')';
-      } else {
-        moveOut.textContent = fmt(movePoints,2) + ' pts';
-        moveSub.textContent = 'Entry price daalo % move aur TP price dekhne ke liye';
-      }
-    } else if(riskAmount > 0){
-      moveOut.textContent = '—';
-      moveSub.textContent = 'SL distance daalo — usse qty aur move dono nikalte hain';
-    } else {
-      moveOut.textContent = '—';
-      moveSub.textContent = 'Capital aur risk% daalo pehle';
-    }
-
-    var warn = $('warn-box');
-    if(minLevNeeded > state.maxLev){
-      warn.className = 'warn show';
-      warn.textContent = 'Is risk% aur SL pe ' + minLevNeeded + 'x leverage chahiye, lekin ' + state.symbol + ' ka max ' + state.maxLev + 'x hai. Risk% kam karo ya SL distance badhao.';
-    } else if(capital > 0 && marginReq > capital){
-      warn.className = 'warn show';
-      warn.textContent = 'Margin required (' + curr + fmt(marginReq,2) + ') capital se zyada hai. Leverage badhao ya risk% kam karo.';
-    } else if(entry > 0 && slDistance === 0){
-      warn.className = 'warn show';
-      warn.textContent = 'SL distance daalo — bina SL ke position size calculate nahi ho sakta.';
-    } else if(capital === 0){
-      warn.className = 'warn show';
-      warn.textContent = 'Capital daalo calculation shuru karne ke liye.';
-    } else {
-      warn.className = 'warn';
-      warn.textContent = '';
-    }
-  }
-
-  calc();
-})();
-
-</script>
-
-<script>
-/* Interval Alarm */
-
-const startTimeInput = document.getElementById('startTime');
-const intervalInput = document.getElementById('interval');
-const intervalUnitSelect = document.getElementById('intervalUnit');
-const startNowCheckbox = document.getElementById('startNow');
-const toggleBtn = document.getElementById('toggleBtn');
-const fullStopBtn = document.getElementById('fullStopBtn');
-const countdownEl = document.getElementById('countdown');
-const nextLabelEl = document.getElementById('nextLabel');
-const statusDot = document.getElementById('statusDot');
-const ringProgress = document.getElementById('ringProgress');
-const ringOverlay = document.getElementById('ringOverlay');
-const ringSub = document.getElementById('ringSub');
-const claimBtn = document.getElementById('claimBtn');
-const logList = document.getElementById('logList');
-const card = document.getElementById('card');
-
-const CIRC = 2 * Math.PI * 98;
-ringProgress.style.strokeDasharray = CIRC;
-
-let nextAlertTime = null;
-let intervalMs = 5 * 60 * 1000;
-let tickTimer = null;
-let ringLoopTimer = null;
-let running = false;
-let ringing = false;
-let audioCtx = null;
-
-function fmtTime(d){
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-function beep(){
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const now = audioCtx.currentTime;
-    [0, 0.35, 0.7].forEach(offset => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = 880;
-      gain.gain.setValueAtTime(0.0001, now + offset);
-      gain.gain.exponentialRampToValueAtTime(0.25, now + offset + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.25);
-      osc.connect(gain).connect(audioCtx.destination);
-      osc.start(now + offset);
-      osc.stop(now + offset + 0.3);
-    });
-  }catch(e){ console.warn('Audio failed', e); }
-}
-
-function notifyBrowser(){
-  if('Notification' in window && Notification.permission === 'granted'){
-    new Notification('Interval Alarm', { body: `It's ${fmtTime(new Date())} — tap to claim`, silent: true });
-  }
-}
-
-function addLogEntry(timeStr){
-  if(logList.querySelector('.log-empty')) logList.innerHTML = '';
-  const item = document.createElement('div');
-  item.className = 'log-item';
-  item.innerHTML = `<span>Alert</span><span>${timeStr}</span>`;
-  logList.prepend(item);
-}
-
-function scheduleNext(){
-  nextAlertTime = nextAlertTime.getTime() + intervalMs;
-  nextAlertTime = new Date(nextAlertTime);
-}
-
-function startRinging(){
-  ringing = true;
-  clearInterval(tickTimer);
-  tickTimer = null;
-  const timeStr = fmtTime(new Date());
-  ringSub.textContent = timeStr;
-  card.classList.add('ringing');
-  addLogEntry(timeStr);
-  ringLoop();
-}
-
-function ringLoop(){
-  beep();
-  notifyBrowser();
-  ringLoopTimer = setTimeout(ringLoop, 2000);
-}
-
-function claimAlert(){
-  if(!ringing) return;
-  ringing = false;
-  clearTimeout(ringLoopTimer);
-  ringLoopTimer = null;
-  card.classList.remove('ringing');
-  scheduleNext();
-  tick();
-  tickTimer = setInterval(tick, 1000);
-}
-
-function tick(){
-  if(ringing) return;
-  const now = Date.now();
-  const remaining = nextAlertTime.getTime() - now;
-
-  if(remaining <= 0){
-    startRinging();
-    return;
-  }
-
-  const totalSeconds = Math.ceil(remaining / 1000);
-  const mm = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-  const ss = (totalSeconds % 60).toString().padStart(2, '0');
-  countdownEl.textContent = `${mm}:${ss}`;
-  nextLabelEl.innerHTML = `<span class="status-dot live" id="statusDot"></span>next at ${fmtTime(nextAlertTime)}`;
-
-  const frac = 1 - (remaining / intervalMs);
-  const offset = CIRC * (1 - Math.max(0, Math.min(1, frac)));
-  ringProgress.style.strokeDashoffset = offset;
-}
-
-function startAlarm(){
-  const amount = parseFloat(intervalInput.value);
-  const unitMs = parseFloat(intervalUnitSelect.value);
-  if(!amount || amount <= 0){
-    alert('Enter an interval greater than 0.');
-    return;
-  }
-  intervalMs = amount * unitMs;
-
-  if('Notification' in window && Notification.permission === 'default'){
-    Notification.requestPermission();
-  }
-
-  const now = new Date();
-  if(startNowCheckbox.checked || !startTimeInput.value){
-    nextAlertTime = now;
-  } else {
-    const [h, m] = startTimeInput.value.split(':').map(Number);
-    const target = new Date(now);
-    target.setHours(h, m, 0, 0);
-    if(target.getTime() <= now.getTime()){
-      while(target.getTime() <= now.getTime()){
-        target.setTime(target.getTime() + intervalMs);
-      }
-    }
-    nextAlertTime = target;
-  }
-
-  running = true;
-  toggleBtn.textContent = 'Stop';
-  toggleBtn.classList.remove('btn-start');
-  toggleBtn.classList.add('btn-stop');
-  [startTimeInput, intervalInput, intervalUnitSelect, startNowCheckbox].forEach(el => el.disabled = true);
-
-  tick();
-  tickTimer = setInterval(tick, 1000);
-}
-
-function stopAlarm(){
-  running = false;
-  ringing = false;
-  clearInterval(tickTimer);
-  clearTimeout(ringLoopTimer);
-  tickTimer = null;
-  ringLoopTimer = null;
-  nextAlertTime = null;
-  card.classList.remove('ringing');
-  countdownEl.textContent = '--:--';
-  nextLabelEl.innerHTML = `<span class="status-dot" id="statusDot"></span>stopped`;
-  ringProgress.style.strokeDashoffset = CIRC;
-  toggleBtn.textContent = 'Start';
-  toggleBtn.classList.remove('btn-stop');
-  toggleBtn.classList.add('btn-start');
-  [startTimeInput, intervalInput, intervalUnitSelect, startNowCheckbox].forEach(el => el.disabled = false);
-}
-
-function fullStop(){
-  stopAlarm();
-  startTimeInput.value = '';
-  intervalInput.value = 5;
-  intervalUnitSelect.value = '60000';
-  startNowCheckbox.checked = true;
-  startTimeInput.disabled = true;
-  logList.innerHTML = '<div class="log-empty">No alerts yet</div>';
-}
-
-toggleBtn.addEventListener('click', () => {
-  if(running) stopAlarm();
-  else startAlarm();
-});
-
-fullStopBtn.addEventListener('click', fullStop);
-
-claimBtn.addEventListener('click', claimAlert);
-
-startNowCheckbox.addEventListener('change', () => {
-  startTimeInput.disabled = startNowCheckbox.checked;
-});
-startTimeInput.disabled = startNowCheckbox.checked;
-
-</script>
 </body>
 </html>
