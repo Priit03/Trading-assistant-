@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interval Alarm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF8F4;
+    --surface:#FFFFFF;
+    --ink:#1F2420;
+    --muted:#7A8079;
+    --accent:#C9762C;
+    --accent-soft:#F2E1CB;
+    --track:#E9E4DA;
+    --border:#EAE5DC;
+    --danger:#B4472E;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 20px;
+  }
+
+  .card{
+    width:100%;
+    max-width:420px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:36px 32px 32px;
+  }
+
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:28px;
+  }
+
+  .ring-wrap{
+    position:relative;
+    width:220px;
+    height:220px;
+    margin:0 auto 28px;
+  }
+
+  svg{ transform:rotate(-90deg); width:100%; height:100%; }
+
+  .ring-track{ stroke:var(--track); }
+  .ring-progress{
+    stroke:var(--accent);
+    stroke-linecap:round;
+    transition:stroke-dashoffset 1s linear;
+  }
+
+  .ring-center{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+
+  .countdown{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:38px;
+    font-weight:600;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:-0.01em;
+  }
+
+  .next-label{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  .status-dot{
+    display:inline-block;
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--track);
+    margin-right:6px;
+  }
+  .status-dot.live{ background:var(--accent); }
+
+  .field{
+    margin-bottom:16px;
+  }
+
+  .field label{
+    display:block;
+    font-size:12px;
+    font-weight:500;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+
+  .row{
+    display:flex;
+    gap:12px;
+  }
+  .row .field{ flex:1; }
+
+  input[type="time"], input[type="number"], select{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    outline:none;
+    transition:border-color .15s;
+  }
+  input[type="time"]:focus, input[type="number"]:focus, select:focus{
+    border-color:var(--accent);
+  }
+
+  .interval-group{
+    display:flex;
+    gap:8px;
+  }
+  .interval-group input{ flex:1.3; }
+  .interval-group select{ flex:1; cursor:pointer; }
+
+  .checkbox-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:20px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .checkbox-row input{ accent-color:var(--accent); width:15px; height:15px; }
+
+  button{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:opacity .15s, transform .1s;
+  }
+  button:active{ transform:scale(0.98); }
+
+  .btn-start{
+    background:var(--ink);
+    color:#fff;
+  }
+  .btn-stop{
+    background:var(--danger);
+    color:#fff;
+  }
+  .btn-fullstop{
+    background:transparent;
+    color:var(--danger);
+    border:1px solid var(--danger);
+    margin-top:10px;
+  }
+  button:disabled{ opacity:0.5; cursor:not-allowed; }
+
+  .hint{
+    font-size:12px;
+    color:var(--muted);
+    text-align:center;
+    margin-top:12px;
+    line-height:1.5;
+  }
+
+  .log{
+    margin-top:24px;
+    border-top:1px solid var(--border);
+    padding-top:16px;
+    max-height:110px;
+    overflow-y:auto;
+  }
+  .log-title{
+    font-size:12px;
+    font-weight:600;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .log-item{
+    font-size:13px;
+    color:var(--ink);
+    padding:4px 0;
+    display:flex;
+    justify-content:space-between;
+  }
+  .log-item span:last-child{ color:var(--muted); }
+  .log-empty{ font-size:13px; color:var(--muted); }
+
+  @keyframes flash{
+    0%, 100%{ background:var(--surface); }
+    50%{ background:var(--accent-soft); }
+  }
+  .card.firing{ animation:flash 0.6s ease-in-out 2; }
+
+  .card.ringing{
+    animation:flash 0.8s ease-in-out infinite;
+    border-color:var(--accent);
+  }
+
+  .ring-overlay{
+    display:none;
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background:var(--accent);
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#fff;
+    animation:pulse 1s ease-in-out infinite;
+  }
+  .card.ringing .ring-overlay{ display:flex; }
+  .card.ringing .ring-progress, .card.ringing .ring-track{ opacity:0; }
+
+  @keyframes pulse{
+    0%, 100%{ transform:scale(1); }
+    50%{ transform:scale(1.04); }
+  }
+
+  .ring-overlay-label{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .ring-overlay-sub{
+    font-size:12px;
+    opacity:0.85;
+    margin-bottom:14px;
+  }
+
+  .claim-btn{
+    background:#fff;
+    color:var(--accent);
+    border:none;
+    border-radius:10px;
+    padding:9px 20px;
+    font-family:'Inter', sans-serif;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .claim-btn:active{ transform:scale(0.97); }
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+  <div class="eyebrow">Interval Alarm</div>
+  <h1>Repeat reminder</h1>
+
+  <div class="ring-wrap">
+    <svg viewBox="0 0 220 220">
+      <circle class="ring-track" cx="110" cy="110" r="98" fill="none" stroke-width="10"/>
+      <circle id="ringProgress" class="ring-progress" cx="110" cy="110" r="98" fill="none" stroke-width="10"
+        stroke-dasharray="615.75" stroke-dashoffset="615.75"/>
+    </svg>
+    <div class="ring-center">
+      <div class="countdown" id="countdown">--:--</div>
+      <div class="next-label" id="nextLabel"><span class="status-dot" id="statusDot"></span>not started</div>
+    </div>
+    <div class="ring-overlay" id="ringOverlay">
+      <div class="ring-overlay-label">Time's up</div>
+      <div class="ring-overlay-sub" id="ringSub">7:05 PM</div>
+      <button class="claim-btn" id="claimBtn">Yep, got it</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="startTime">Start at</label>
+      <input type="time" id="startTime">
+    </div>
+    <div class="field">
+      <label for="interval">Every</label>
+      <div class="interval-group">
+        <input type="number" id="interval" min="1" value="5">
+        <select id="intervalUnit">
+          <option value="60000" selected>min</option>
+          <option value="1000">sec</option>
+          <option value="3600000">hr</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="startNow" checked>
+    <label for="startNow">Start from now instead of a fixed time</label>
+  </div>
+
+  <button class="btn-start" id="toggleBtn">Start</button>
+  <button class="btn-fullstop" id="fullStopBtn">Full stop &amp; reset</button>
+  <div class="hint">When time's up it keeps ringing — sound, flash, notification, on repeat — until you tap "Yep, got it." Tab must stay open.</div>
+
+  <div class="log">
+    <div class="log-title">Alert log</div>
+    <div id="logList"><div class="log-empty">No alerts yet</div></div>
+  </div>
+</div>
+
+<script>
+const startTimeInput = document.getElementById('startTime');
+const intervalInput = document.getElementById('interval');
+const intervalUnitSelect = document.getElementById('intervalUnit');
+const startNowCheckbox = document.getElementById('startNow');
+const toggleBtn = document.getElementById('toggleBtn');
+const fullStopBtn = document.getElementById('fullStopBtn');
+const countdownEl = document.getElementById('countdown');
+const nextLabelEl = document.getElementById('nextLabel');
+const statusDot = document.getElementById('statusDot');
+const ringProgress = document.getElementById('ringProgress');
+const ringOverlay = document.getElementById('ringOverlay');
+const ringSub = document.getElementById('ringSub');
+const claimBtn = document.getElementById('claimBtn');
+const logList = document.getElementById('logList');
+const card = document.getElementById('card');
+
+const CIRC = 2 * Math.PI * 98;
+ringProgress.style.strokeDasharray = CIRC;
+
+let nextAlertTime = null;
+let intervalMs = 5 * 60 * 1000;
+let tickTimer = null;
+let ringLoopTimer = null;
+let running = false;
+let ringing = false;
+let audioCtx = null;
+
+function fmtTime(d){
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function beep(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    [0, 0.35, 0.7].forEach(offset => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.0001, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.25, now + offset + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.25);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(now + offset);
+      osc.stop(now + offset + 0.3);
+    });
+  }catch(e){ console.warn('Audio failed', e); }
+}
+
+function notifyBrowser(){
+  if('Notification' in window && Notification.permission === 'granted'){
+    new Notification('Interval Alarm', { body: `It's ${fmtTime(new Date())} — tap to claim`, silent: true });
+  }
+}
+
+function addLogEntry(timeStr){
+  if(logList.querySelector('.log-empty')) logList.innerHTML = '';
+  const item = document.createElement('div');
+  item.className = 'log-item';
+  item.innerHTML = `<span>Alert</span><span>${timeStr}</span>`;
+  logList.prepend(item);
+}
+
+function scheduleNext(){
+  nextAlertTime = nextAlertTime.getTime() + intervalMs;
+  nextAlertTime = new Date(nextAlertTime);
+}
+
+function startRinging(){
+  ringing = true;
+  clearInterval(tickTimer);
+  tickTimer = null;
+  const timeStr = fmtTime(new Date());
+  ringSub.textContent = timeStr;
+  card.classList.add('ringing');
+  addLogEntry(timeStr);
+  ringLoop();
+}
+
+function ringLoop(){
+  beep();
+  notifyBrowser();
+  ringLoopTimer = setTimeout(ringLoop, 2000);
+}
+
+function claimAlert(){
+  if(!ringing) return;
+  ringing = false;
+  clearTimeout(ringLoopTimer);
+  ringLoopTimer = null;
+  card.classList.remove('ringing');
+  scheduleNext();
+  tick();
+  tickTimer = setInterval(tick, 1000);
+}
+
+function tick(){
+  if(ringing) return;
+  const now = Date.now();
+  const remaining = nextAlertTime.getTime() - now;
+
+  if(remaining <= 0){
+    startRinging();
+    return;
+  }
+
+  const totalSeconds = Math.ceil(remaining / 1000);
+  const mm = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+  const ss = (totalSeconds % 60).toString().padStart(2, '0');
+  countdownEl.textContent = `${mm}:${ss}`;
+  nextLabelEl.innerHTML = `<span class="status-dot live" id="statusDot"></span>next at ${fmtTime(nextAlertTime)}`;
+
+  const frac = 1 - (remaining / intervalMs);
+  const offset = CIRC * (1 - Math.max(0, Math.min(1, frac)));
+  ringProgress.style.strokeDashoffset = offset;
+}
+
+function startAlarm(){
+  const amount = parseFloat(intervalInput.value);
+  const unitMs = parseFloat(intervalUnitSelect.value);
+  if(!amount || amount <= 0){
+    alert('Enter an interval greater than 0.');
+    return;
+  }
+  intervalMs = amount * unitMs;
+
+  if('Notification' in window && Notification.permission === 'default'){
+    Notification.requestPermission();
+  }
+
+  const now = new Date();
+  if(startNowCheckbox.checked || !startTimeInput.value){
+    nextAlertTime = now;
+  } else {
+    const [h, m] = startTimeInput.value.split(':').map(Number);
+    const target = new Date(now);
+    target.setHours(h, m, 0, 0);
+    if(target.getTime() <= now.getTime()){
+      while(target.getTime() <= now.getTime()){
+        target.setTime(target.getTime() + intervalMs);
+      }
+    }
+    nextAlertTime = target;
+  }
+
+  running = true;
+  toggleBtn.textContent = 'Stop';
+  toggleBtn.classList.remove('btn-start');
+  toggleBtn.classList.add('btn-stop');
+  [startTimeInput, intervalInput, intervalUnitSelect, startNowCheckbox].forEach(el => el.disabled = true);
+
+  tick();
+  tickTimer = setInterval(tick, 1000);
+}
+
+function stopAlarm(){
+  running = false;
+  ringing = false;
+  clearInterval(tickTimer);
+  clearTimeout(ringLoopTimer);
+  tickTimer = null;
+  ringLoopTimer = null;
+  nextAlertTime = null;
+  card.classList.remove('ringing');
+  countdownEl.textContent = '--:--';
+  nextLabelEl.innerHTML = `<span class="status-dot" id="statusDot"></span>stopped`;
+  ringProgress.style.strokeDashoffset = CIRC;
+  toggleBtn.textContent = 'Start';
+  toggleBtn.classList.remove('btn-stop');
+  toggleBtn.classList.add('btn-start');
+  [startTimeInput, intervalInput, intervalUnitSelect, startNowCheckbox].forEach(el => el.disabled = false);
+}
+
+function fullStop(){
+  stopAlarm();
+  startTimeInput.value = '';
+  intervalInput.value = 5;
+  intervalUnitSelect.value = '60000';
+  startNowCheckbox.checked = true;
+  startTimeInput.disabled = true;
+  logList.innerHTML = '<div class="log-empty">No alerts yet</div>';
+}
+
+toggleBtn.addEventListener('click', () => {
+  if(running) stopAlarm();
+  else startAlarm();
+});
+
+fullStopBtn.addEventListener('click', fullStop);
+
+claimBtn.addEventListener('click', claimAlert);
+
+startNowCheckbox.addEventListener('change', () => {
+  startTimeInput.disabled = startNowCheckbox.checked;
+});
+startTimeInput.disabled = startNowCheckbox.checked;
+</script>
+
+</body>
+</html>
