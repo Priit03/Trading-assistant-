@@ -884,6 +884,20 @@ input[type=range]{
 }
 
 </style>
+
+<style>
+.command-app{padding:24px;max-width:1120px;margin:auto}
+.cmd-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+.cmd-card{border:1px solid var(--border-soft);background:var(--panel);border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
+.cmd-title{font-weight:700;font-size:16px;margin-bottom:4px}.cmd-sub{font-size:12px;color:var(--text-faint);margin-bottom:14px}
+.cmd-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.cmd-stat{border:1px solid var(--border-soft);border-radius:10px;padding:12px}.cmd-stat b{display:block;font:700 19px "IBM Plex Mono",monospace;margin-top:4px}.cmd-stat span{font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em}
+.cmd-row{display:flex;gap:8px;align-items:center;margin-top:10px}.cmd-row input,.cmd-row select,.cmd-card textarea{background:var(--input);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:10px;font:inherit}.cmd-row input{flex:1}.cmd-btn{border:1px solid var(--border);background:var(--panel-2);color:var(--text);padding:9px 12px;border-radius:9px;cursor:pointer}.cmd-btn:hover{border-color:var(--teal)}
+.check{display:flex;align-items:center;gap:9px;padding:10px;border-bottom:1px solid var(--border-soft);font-size:13px}.check:last-child{border-bottom:0}.check input{accent-color:var(--teal);width:17px;height:17px}.score{font:700 28px "IBM Plex Mono",monospace;color:var(--teal)}
+.session-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.session{padding:10px;border:1px solid var(--border-soft);border-radius:9px;text-align:center}.session b{display:block;font-size:12px}.session small{color:var(--text-faint);font:11px "IBM Plex Mono",monospace}.session.active{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
+.journal-table{width:100%;border-collapse:collapse;font-size:12px}.journal-table th,.journal-table td{padding:9px;border-bottom:1px solid var(--border-soft);text-align:left}.journal-table th{color:var(--text-faint);font-size:10px;text-transform:uppercase}.positive{color:#3ddc84}.negative{color:#ff5c5c}
+.cmd-note{width:100%;min-height:100px;resize:vertical}.meter{height:7px;background:var(--border-soft);border-radius:20px;overflow:hidden;margin:10px 0}.meter i{display:block;height:100%;width:0;background:var(--teal);transition:.2s}.shortcut{display:flex;justify-content:space-between;padding:7px 0;font-size:12px;border-bottom:1px solid var(--border-soft)}kbd{font:10px "IBM Plex Mono",monospace;border:1px solid var(--border);padding:3px 6px;border-radius:5px;color:var(--text-faint)}
+@media(max-width:850px){.cmd-grid{grid-template-columns:1fr}.cmd-stats,.session-grid{grid-template-columns:repeat(2,1fr)}.command-app{padding:12px}}
+</style>
 </head>
 <body>
 <div class="app-shell">
@@ -895,470 +909,152 @@ input[type=range]{
   <div class="main-tabs">
     <button class="main-tab active" data-view="calculator-view">Position Size Calculator</button>
     <button class="main-tab" data-view="alarm-view">Interval Alarm</button>
+    <button class="main-tab" data-view="command-view">Command Center</button>
   </div>
 
   <section id="calculator-view" class="app-view active">
-    
-<div class="wrap">
+<style>
+/* Unified calculator */
+.ttx-wrap{max-width:1120px;margin:0 auto}.ttx-eyebrow{margin:0 0 6px;color:var(--teal);font:600 11px/1.2 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.12em}.ttx-wrap h1{margin:0;font-size:clamp(28px,4vw,44px);letter-spacing:-.045em}.ttx-sub{margin:8px 0 22px;color:var(--text-muted);font-size:13px}.ttx-tabs{display:flex;gap:7px;margin-bottom:14px}.ttx-tab{border:1px solid var(--border-soft);background:var(--panel);color:var(--text-muted);padding:10px 14px;border-radius:9px;font-weight:700;cursor:pointer}.ttx-tab.active{color:var(--text);border-color:var(--teal);box-shadow:0 0 0 1px rgba(23,195,178,.12) inset}.ttx-grid{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(420px,1.35fr);gap:14px}.ttx-panel{border:1px solid var(--border-soft);background:var(--panel);border-radius:14px;padding:17px}.ttx-panel+.ttx-panel{margin-top:14px}.ttx-title{font:700 11px/1.2 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.09em;color:var(--text-faint);margin-bottom:11px}.ttx-field{margin-bottom:13px}.ttx-field label{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:700;margin-bottom:6px}.ttx-field .echo{color:var(--teal);font-family:'IBM Plex Mono',monospace}.ttx-input,.ttx-select{width:100%;box-sizing:border-box;border:1px solid var(--border-soft);background:var(--bg);color:var(--text);border-radius:8px;padding:10px 11px;outline:none}.ttx-input:focus,.ttx-select:focus{border-color:var(--teal)}.ttx-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ttx-pills{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.ttx-pill{border:1px solid var(--border-soft);background:var(--bg);border-radius:9px;padding:9px 10px;cursor:pointer}.ttx-pill strong{display:block;font-size:12px}.ttx-pill small{display:block;color:var(--text-faint);font:10px 'IBM Plex Mono',monospace;margin-top:2px}.ttx-pill.active{border-color:var(--teal);background:rgba(23,195,178,.07)}.ttx-risk-presets{display:flex;flex-wrap:wrap;gap:6px}.ttx-risk-btn{border:1px solid var(--border-soft);background:var(--bg);color:var(--text-muted);border-radius:7px;padding:7px 9px;font:600 11px 'IBM Plex Mono',monospace;cursor:pointer}.ttx-risk-btn.active{border-color:var(--teal);color:var(--teal)}.ttx-side{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ttx-side button{padding:9px;border:1px solid var(--border-soft);background:var(--bg);color:var(--text-muted);border-radius:8px;font-weight:800;cursor:pointer}.ttx-side .long.active{border-color:#3ddc84;color:#3ddc84;background:rgba(61,220,132,.07)}.ttx-side .short.active{border-color:#ff5c5c;color:#ff5c5c;background:rgba(255,92,92,.07)}.ttx-note{font-size:10px;color:var(--text-faint);line-height:1.5}.ttx-custom{display:none;margin-top:10px}.ttx-custom.show{display:block}.ttx-main-result{border:1px solid var(--teal);background:rgba(23,195,178,.055);border-radius:12px;padding:16px;margin-bottom:12px}.ttx-k{font:600 10px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--text-faint)}.ttx-big{font-size:42px;font-weight:800;letter-spacing:-.05em;margin:2px 0}.ttx-status{font:700 11px 'IBM Plex Mono',monospace}.ttx-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.ttx-stat{border:1px solid var(--border-soft);border-radius:10px;padding:11px;background:var(--bg)}.ttx-stat .v{font-weight:800;font-size:16px;margin-top:4px}.ttx-stat.wide{grid-column:1/-1}.ttx-table{margin-top:12px;border:1px solid var(--border-soft);border-radius:10px;overflow:hidden}.ttx-th,.ttx-tr{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding:9px 10px;align-items:center}.ttx-th{background:rgba(127,127,127,.07);font:700 9px 'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--text-faint)}.ttx-tr{border-top:1px solid var(--border-soft);font:11px 'IBM Plex Mono',monospace}.ttx-tr.safe{background:rgba(61,220,132,.035)}.ttx-tr.over{background:rgba(255,92,92,.035)}.ttx-foot{margin-top:10px;color:var(--text-faint);font-size:10px;line-height:1.5}.ttx-hidden{display:none!important}@media(max-width:820px){.ttx-grid{grid-template-columns:1fr}.ttx-tabs{overflow:auto}.ttx-tab{white-space:nowrap}.ttx-row2{grid-template-columns:1fr}.ttx-th,.ttx-tr{grid-template-columns:1fr 1fr 1fr 1fr;font-size:9px}}
+</style>
+<div class="ttx-wrap">
+  <p class="ttx-eyebrow">Trading Toolkit · unified risk engine</p>
+  <h1>Position Size Calculator</h1>
+  <p class="ttx-sub">Prop account, Delta Exchange, Futures aur CFD — instrument select karo, risk customize karo, aur exact size dekho.</p>
 
-  <p class="eyebrow">Order ticket · risk-based sizing</p>
-  <h1>Position size calculator</h1>
-  <p class="sub">Capital, risk %, aur stop-loss se lot size aur margin nikalo — commission included.</p>
-
-  <div class="tabs">
-    <div class="tab active" id="tab-delta">Delta Exchange</div>
-    <div class="tab disabled">Futures <span class="soon">Coming soon</span></div>
-    <div class="tab disabled">CFD <span class="soon">Coming soon</span></div>
+  <div class="ttx-tabs" id="marketTabs">
+    <button class="ttx-tab active" data-market="prop">Prop / Futures</button>
+    <button class="ttx-tab" data-market="delta">Delta Exchange</button>
+    <button class="ttx-tab" data-market="cfd">CFD</button>
   </div>
 
-  <div class="grid">
-    <!-- LEFT: inputs -->
+  <div class="ttx-grid">
     <div>
-      <div class="panel">
-        <div class="section-title">Instrument</div>
-        <div class="pillrow">
-          <div class="pill active" id="sym-eth" data-max="100">ETHUSD<span class="lev">Max 100x</span></div>
-          <div class="pill" id="sym-btc" data-max="200">BTCUSD<span class="lev">Max 200x</span></div>
+      <div class="ttx-panel">
+        <div class="ttx-title">Account / Instrument</div>
+        <div class="ttx-field" id="accountField">
+          <label>Account type <span class="echo" id="accountEcho">Tradeify $25K</span></label>
+          <select class="ttx-select" id="accountSelect">
+            <option value="tradeify25">Tradeify $25K · $200 max risk</option>
+            <option value="tradeify50">Tradeify $50K · $400 max risk</option>
+            <option value="tradeify100">Tradeify $100K · $800 max risk</option>
+            <option value="topstep50">Topstep $50K · custom risk</option>
+            <option value="topstep100">Topstep $100K · custom risk</option>
+            <option value="topstep150">Topstep $150K · custom risk</option>
+            <option value="custom">Custom account / risk</option>
+          </select>
         </div>
-
-        <div class="side-toggle">
-          <div class="side-btn long-active" id="side-long">Long</div>
-          <div class="side-btn" id="side-short">Short</div>
+        <div class="ttx-field ttx-custom" id="customRiskBox">
+          <label>Custom maximum loss <span class="echo" id="customRiskEcho">$200</span></label>
+          <input class="ttx-input" type="number" id="customRisk" value="200" min="0.01" step="1">
         </div>
-
-        <div class="row">
-          <label>Entry price <span class="val" id="entry-echo">—</span></label>
-          <input type="number" id="entry" placeholder="e.g. 3200" min="0" step="0.01">
-          <div style="font-size:11px; color:var(--text-faint); margin-top:5px;">Sirf margin, position value aur TP price ke liye chahiye — risk amount aur qty (points SL se) iske bina bhi nikal jaati hai.</div>
+        <div class="ttx-field">
+          <label>Instrument <span class="echo" id="contractEcho">$2 / point</span></label>
+          <div class="ttx-pills" id="instrumentPills"></div>
         </div>
-
-        <div class="row">
-          <label>Leverage <span class="val" id="lev-echo">10x</span></label>
-          <input type="range" id="lev-slider" min="1" max="100" value="10" step="1">
-          <input type="number" id="lev-input" min="1" max="100" value="10" step="1" style="margin-top:6px;">
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="section-title">Capital &amp; risk</div>
-
-        <div class="row">
-
-          <label>
-            Total capital
-            <span class="val" id="capital-echo">₹5,000</span>
-          </label>
-
-          <div class="inputline">
-            <select class="curr-select" id="currency">
-              <option value="₹" selected>₹</option>
-              <option value="$">$</option>
-            </select>
-
-            <input
-              type="number"
-              id="capital"
-              value="5000"
-              placeholder="5000"
-              min="0"
-              step="1"
-            >
-          </div>
-
-          <div class="preset-row">
-            <button type="button" class="preset-btn" data-cap-add="1000">+ ₹1K</button>
-            <button type="button" class="preset-btn" data-cap-add="5000">+ ₹5K</button>
-            <button type="button" class="preset-btn" data-cap-add="10000">+ ₹10K</button>
-          </div>
-
-        </div>
-
-        <div class="row">
-
-          <label>
-            SL loss
-            <span class="val" id="risk-pct-echo">20%</span>
-          </label>
-
-          <input
-            type="number"
-            id="risk-amount"
-            value="1000"
-            placeholder="1000"
-            min="0"
-            step="1"
-          >
-
-          <div class="preset-row">
-            <button type="button" class="preset-btn" data-loss="500">₹500</button>
-            <button type="button" class="preset-btn" data-loss="1000">₹1K</button>
-            <button type="button" class="preset-btn" data-loss="2000">₹2K</button>
-          </div>
-
-        </div>
-
-        <div class="meter-wrap">
-          <div class="meter-label"><span>Lower loss</span><span>Higher loss</span></div>
-          <div class="meter">
-            <div class="meter-marker" id="risk-marker" style="left:10%"></div>
-          </div>
+        <div class="ttx-side">
+          <button class="long active" id="longBtn">LONG</button>
+          <button class="short" id="shortBtn">SHORT</button>
         </div>
       </div>
 
-      <div class="panel">
-        <div class="section-title">Stop loss</div>
-        <div class="row">
-          <label>Type</label>
-          <div class="toggle2">
-            <button class="active" id="sl-points-btn">Points</button>
-            <button id="sl-pct-btn">% loss</button>
-          </div>
+      <div class="ttx-panel">
+        <div class="ttx-title">Trade inputs</div>
+        <div class="ttx-row2">
+          <div class="ttx-field"><label>Entry price</label><input class="ttx-input" type="number" id="entry" placeholder="e.g. 29903.75" step="any"></div>
+          <div class="ttx-field"><label>SL distance <span class="echo" id="slEcho">points</span></label><input class="ttx-input" type="number" id="sl" placeholder="e.g. 32.89" min="0.000001" step="any"></div>
         </div>
-        <div class="row" id="sl-points-row">
-          <label>SL distance (points)</label>
-          <input type="number" id="sl-points" placeholder="e.g. 15" min="0" step="0.01">
+        <div class="ttx-row2">
+          <div class="ttx-field"><label>SL mode</label><select class="ttx-select" id="slMode"><option value="points">Points / price move</option><option value="percent">Percentage of entry</option></select></div>
+          <div class="ttx-field"><label>Target R <span class="echo" id="rrEcho">3R</span></label><input type="range" id="rr" min="0.5" max="10" step="0.5" value="3"></div>
         </div>
-        <div class="row" id="sl-pct-row" style="display:none;">
-          <label>SL distance (%)</label>
-          <input type="number" id="sl-pct" placeholder="e.g. 0.5" min="0" step="0.01">
+        <div class="ttx-field">
+          <label>Maximum loss per trade <span class="echo" id="riskEcho">$200</span></label>
+          <input class="ttx-input" type="number" id="risk" value="200" min="0.01" step="1">
+          <div class="ttx-risk-presets" id="riskPresets" style="margin-top:7px"></div>
         </div>
-        <div class="row" style="margin-bottom:0;">
-          <label>Target reward <span class="val" id="rr-echo">2R</span></label>
-          <input type="range" id="rr-slider" min="0.5" max="10" value="2" step="0.5">
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="section-title">Commission <span class="hint" id="fee-type-hint">taker order</span></div>
-        <div class="row">
-          <label>Order type</label>
-          <div class="toggle2">
-            <button class="active" id="fee-taker-btn">Taker · 0.05%</button>
-            <button id="fee-maker-btn">Maker · 0.02%</button>
-          </div>
-        </div>
-        <div class="row" style="margin-bottom:0;">
-          <label>Fee % <span class="hint">Delta Exchange futures rate</span></label>
-          <input type="number" id="commission" value="0.05" min="0" step="0.001">
-        </div>
+        <div class="ttx-field" id="leverageField"><label>Leverage <span class="echo" id="levEcho">10x</span></label><input type="range" id="lev" min="1" max="100" value="10"><input class="ttx-input" style="margin-top:7px" type="number" id="levNum" min="1" max="100" value="10"></div>
+        <div class="ttx-field" id="feeField"><label>Round-trip fee / commission</label><input class="ttx-input" type="number" id="fee" value="0" min="0" step="0.01"><div class="ttx-note">Optional. Futures/Delta/CFD fee models differ, so this stays editable.</div></div>
       </div>
     </div>
 
-    <!-- RIGHT: ticket -->
-    <div class="ticket">
-      <div class="panel" style="margin-bottom:16px;">
-        <div class="section-title" style="margin-bottom:10px;">Move needed for target</div>
-        <div class="big" id="move-out" style="font-size:24px;">—</div>
-        <div class="big-sub" id="move-sub" style="margin-bottom:0;">Price move required to hit target reward</div>
-      </div>
-      <div class="panel">
-        <div class="ticket-head">
-          <span class="label">Result</span>
-          <span class="badge long" id="side-badge">Long</span>
+    <div>
+      <div class="ttx-panel">
+        <div class="ttx-main-result">
+          <div class="ttx-k">Maximum safe position size</div>
+          <div class="ttx-big" id="qtyOut">—</div>
+          <div class="ttx-status" id="statusOut">Enter entry + SL</div>
+        </div>
+        <div class="ttx-stats">
+          <div class="ttx-stat"><div class="ttx-k">SL distance</div><div class="v" id="distOut">—</div></div>
+          <div class="ttx-stat"><div class="ttx-k">Risk / contract</div><div class="v" id="rpcOut">—</div></div>
+          <div class="ttx-stat"><div class="ttx-k">Actual total risk</div><div class="v" id="actualOut">—</div></div>
+          <div class="ttx-stat"><div class="ttx-k">Risk remaining</div><div class="v" id="remainOut">—</div></div>
+          <div class="ttx-stat"><div class="ttx-k">Stop-loss price</div><div class="v" id="stopOut">—</div></div>
+          <div class="ttx-stat"><div class="ttx-k">Target price</div><div class="v" id="targetOut">—</div></div>
+          <div class="ttx-stat"><div class="ttx-k">Position value</div><div class="v" id="posOut">—</div></div>
+          <div class="ttx-stat"><div class="ttx-k">Margin / capital used</div><div class="v" id="marginOut">—</div></div>
+          <div class="ttx-stat wide"><div class="ttx-k">Fee allowance / total</div><div class="v" id="feeOut">—</div></div>
         </div>
 
-        <div class="big" id="qty-out">0.0000</div>
-        <div class="big-sub" id="qty-sub">Quantity to trade</div>
+        <div class="ttx-title" style="margin-top:15px">Risk options · choose your loss</div>
+        <div class="ttx-table"><div class="ttx-th"><span>Max loss</span><span>Contracts</span><span>Actual risk</span><span>Risk left</span></div><div id="riskRows"></div></div>
 
-        <div class="warn" id="warn-box"></div>
+        <div class="ttx-title" style="margin-top:15px">Closest contract options</div>
+        <div class="ttx-table"><div class="ttx-th"><span>Contracts</span><span>Risk</span><span>Difference</span><span>Status</span></div><div id="nearRows"></div></div>
 
-        <div class="stat-grid">
-          <div class="stat" style="grid-column:1 / -1; border-color:var(--teal); background:rgba(23,195,178,0.06);">
-            <div class="k">Leverage to use (minimum)</div>
-            <div class="v" id="eff-lev" style="color:var(--teal); font-size:18px;">—</div>
-          </div>
-          <div class="stat">
-            <div class="k">Position value</div>
-            <div class="v" id="pos-value">—</div>
-          </div>
-          <div class="stat">
-            <div class="k">Margin required</div>
-            <div class="v" id="margin-req">—</div>
-          </div>
-          <div class="stat">
-            <div class="k">SL price</div>
-            <div class="v short" id="sl-price">—</div>
-          </div>
-          <div class="stat">
-            <div class="k">SL loss</div>
-            <div class="v" id="risk-out">—</div>
-          </div>
-          <div class="stat">
-            <div class="k">Total loss</div>
-            <div class="v" id="total-loss-out">—</div>
-          </div>
-          <div class="stat" style="grid-column:1 / -1;">
-            <div class="k">Total fees (round trip)</div>
-            <div class="v" id="fee-out">—</div>
-          </div>
-        </div>
-
-        <div class="section-title" style="margin-top:4px;">Reward at R-multiples <span class="hint">1R = risk amount</span></div>
-        <div class="r-table">
-          <div class="r-head"><span>R</span><span>Profit</span><span style="text-align:right;">Return on capital</span></div>
-          <div id="r-rows"></div>
-        </div>
-
-        <div class="footnote">
-          SL loss tumhara selected loss hai. Fees uske upar add hoti hain. Total loss = SL loss + fees. Leverage sirf margin required badalta hai; quantity SL loss aur SL distance se fix hoti hai.
-        </div>
+        <div class="ttx-title" style="margin-top:15px">R-multiple targets</div>
+        <div class="ttx-table"><div class="ttx-th"><span>R</span><span>Profit</span><span>Target</span><span>Return</span></div><div id="rRows"></div></div>
+        <div class="ttx-foot">Whole-number futures contracts are always rounded DOWN. Risk never exceeds the selected maximum. For Delta/CFD, quantity rules depend on the selected instrument and contract specification.</div>
       </div>
     </div>
   </div>
 </div>
-
 <script>
 (function(){
-  var state = {
-    symbol: 'ETHUSD',
-    maxLev: 100,
-    side: 'long',
-    slMode: 'points'
+  const $=id=>document.getElementById(id);
+  const DATA={
+    prop:{
+      'MNQ':{name:'MNQ · Micro Nasdaq-100',value:2,unit:'$/point',step:1,maxLev:100},
+      'MBT':{name:'MBT · Micro Bitcoin',value:0.1,unit:'$/BTC move per contract',step:1,maxLev:100}
+    },
+    delta:{
+      'ETHUSD':{name:'ETHUSD · Delta',value:1,unit:'$/1 ETH move',step:.01,maxLev:100},
+      'BTCUSD':{name:'BTCUSD · Delta',value:1,unit:'$/1 BTC move',step:.001,maxLev:200},
+      'SOLUSD':{name:'SOLUSD · Delta',value:1,unit:'$/1 SOL move',step:.01,maxLev:100},
+      'XRPUSD':{name:'XRPUSD · Delta',value:1,unit:'$/1 XRP move',step:1,maxLev:100},
+      'DOGEUSD':{name:'DOGEUSD · Delta',value:1,unit:'$/1 DOGE move',step:1,maxLev:100}
+    },
+    cfd:{
+      'XAUUSD':{name:'XAUUSD · Gold CFD',value:100,unit:'$/1.00 move per lot',step:.01,maxLev:200},
+      'EURUSD':{name:'EURUSD · CFD',value:100000,unit:'$/1.00 price move per lot',step:.01,maxLev:100},
+      'GBPUSD':{name:'GBPUSD · CFD',value:100000,unit:'$/1.00 price move per lot',step:.01,maxLev:100},
+      'USDJPY':{name:'USDJPY · CFD',value:100000,unit:'base-unit approximation',step:.01,maxLev:100},
+      'NAS100':{name:'NAS100 · CFD',value:1,unit:'$/point per lot',step:.01,maxLev:100},
+      'US30':{name:'US30 · CFD',value:1,unit:'$/point per lot',step:.01,maxLev:100}
+    }
   };
-
-  var $ = function(id){ return document.getElementById(id); };
-
-  var entryEl = $('entry'), levSlider = $('lev-slider'), levInput = $('lev-input'),
-      capitalEl = $('capital'), riskAmountEl = $('risk-amount'),
-      slPointsEl = $('sl-points'), slPctEl = $('sl-pct'), commissionEl = $('commission'),
-      currencyEl = $('currency'), capitalEchoEl = $('capital-echo');
-
-  function fmt(n, dec){
-    if(!isFinite(n)) return '—';
-    return n.toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec});
-  }
-
-  function symbolPick(sym, max){
-    state.symbol = sym; state.maxLev = max;
-    $('sym-eth').classList.toggle('active', sym==='ETHUSD');
-    $('sym-btc').classList.toggle('active', sym==='BTCUSD');
-    levSlider.max = max;
-    if(parseFloat(levInput.value) > max){ levInput.value = max; levSlider.value = max; }
-    calc();
-  }
-  $('sym-eth').onclick = function(){ symbolPick('ETHUSD', 100); };
-  $('sym-btc').onclick = function(){ symbolPick('BTCUSD', 200); };
-
-  function sidePick(side){
-    state.side = side;
-    $('side-long').classList.toggle('long-active', side==='long');
-    $('side-short').classList.toggle('short-active', side==='short');
-    var badge = $('side-badge');
-    badge.textContent = side==='long' ? 'Long' : 'Short';
-    badge.className = 'badge ' + (side==='long' ? 'long' : 'short');
-    calc();
-  }
-  $('side-long').onclick = function(){ sidePick('long'); };
-  $('side-short').onclick = function(){ sidePick('short'); };
-
-  levSlider.oninput = function(){ levInput.value = levSlider.value; calc(); };
-  levInput.oninput = function(){
-    var v = Math.min(parseFloat(levInput.value)||1, state.maxLev);
-    levSlider.value = v; calc();
-  };
-
-  riskAmountEl.oninput = calc;
-
-  document.querySelectorAll('.preset-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      if(btn.dataset.capAdd){
-        var current = parseFloat(capitalEl.value) || 0;
-        capitalEl.value = current + parseFloat(btn.dataset.capAdd);
-      }
-
-      if(btn.dataset.loss){
-        riskAmountEl.value = parseFloat(btn.dataset.loss);
-      }
-
-      calc();
-    });
-  });
-
-  capitalEl.oninput = calc;
-  entryEl.oninput = calc;
-  slPointsEl.oninput = calc;
-  slPctEl.oninput = calc;
-  commissionEl.oninput = calc;
-  currencyEl.onchange = calc;
-
-  var rrSlider = $('rr-slider');
-  rrSlider.oninput = function(){ $('rr-echo').textContent = fmt(parseFloat(rrSlider.value),1) + 'R'; calc(); };
-
-  $('fee-taker-btn').onclick = function(){
-    $('fee-taker-btn').classList.add('active');
-    $('fee-maker-btn').classList.remove('active');
-    $('fee-type-hint').textContent = 'taker order';
-    commissionEl.value = '0.05';
-    calc();
-  };
-  $('fee-maker-btn').onclick = function(){
-    $('fee-maker-btn').classList.add('active');
-    $('fee-taker-btn').classList.remove('active');
-    $('fee-type-hint').textContent = 'maker order';
-    commissionEl.value = '0.02';
-    calc();
-  };
-
-  $('sl-points-btn').onclick = function(){
-    state.slMode = 'points';
-    $('sl-points-btn').classList.add('active');
-    $('sl-pct-btn').classList.remove('active');
-    $('sl-points-row').style.display = '';
-    $('sl-pct-row').style.display = 'none';
-    calc();
-  };
-  $('sl-pct-btn').onclick = function(){
-    state.slMode = 'pct';
-    $('sl-pct-btn').classList.add('active');
-    $('sl-points-btn').classList.remove('active');
-    $('sl-pct-row').style.display = '';
-    $('sl-points-row').style.display = 'none';
-    calc();
-  };
-
+  const ACC={tradeify25:{name:'Tradeify $25K',risk:200},tradeify50:{name:'Tradeify $50K',risk:400},tradeify100:{name:'Tradeify $100K',risk:800},topstep50:{name:'Topstep $50K',risk:200},topstep100:{name:'Topstep $100K',risk:400},topstep150:{name:'Topstep $150K',risk:600},custom:{name:'Custom',risk:200}};
+  let market='prop', symbol='MNQ', side='long';
+  const fmt=(n,d=2)=>isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+  function marketTabs(){document.querySelectorAll('.ttx-tab').forEach(b=>b.onclick=()=>{market=b.dataset.market;symbol=Object.keys(DATA[market])[0];document.querySelectorAll('.ttx-tab').forEach(x=>x.classList.toggle('active',x===b));$('accountField').style.display=market==='prop'?'block':'none';$('leverageField').style.display=market==='prop'||market==='delta'||market==='cfd'?'block':'none';renderInstruments();syncRisk();calc();});}
+  function renderInstruments(){const box=$('instrumentPills');box.innerHTML='';Object.entries(DATA[market]).forEach(([k,v])=>{const b=document.createElement('button');b.className='ttx-pill'+(k===symbol?' active':'');b.innerHTML='<strong>'+k+'</strong><small>'+v.value+' '+v.unit+'</small>';b.onclick=()=>{symbol=k;renderInstruments();$('lev').max=v.maxLev;$('levNum').max=v.maxLev;if(+$('levNum').value>v.maxLev){$('levNum').value=v.maxLev;$('lev').value=v.maxLev}calc()};box.appendChild(b)});}
+  function syncRisk(){let a=ACC[$('accountSelect').value]||ACC.custom;let r=$('accountSelect').value==='custom'?+$('customRisk').value||0:a.risk;$('risk').value=r;$('riskEcho').textContent='$'+fmt(r,2);$('customRiskBox').classList.toggle('show',$('accountSelect').value==='custom');$('accountEcho').textContent=a.name;}
+  function riskPresets(){const box=$('riskPresets');box.innerHTML='';[25,50,75,100,125,150,175,200,250,300,400,500,750,1000].forEach(x=>{const b=document.createElement('button');b.className='ttx-risk-btn';b.textContent='$'+x;b.onclick=()=>{$('risk').value=x;document.querySelectorAll('.ttx-risk-btn').forEach(z=>z.classList.remove('active'));b.classList.add('active');calc()};box.appendChild(b)})}
   function calc(){
-    var curr = currencyEl.value;
-    var entry = parseFloat(entryEl.value) || 0;
-    var lev = Math.min(parseFloat(levInput.value) || 1, state.maxLev);
-    var capital = parseFloat(capitalEl.value) || 0;
-    var commission = (parseFloat(commissionEl.value) || 0) / 100;
-
-    $('entry-echo').textContent = entry ? curr + fmt(entry,2) : '—';
-    $('lev-echo').textContent = lev + 'x';
-    var riskAmount =
-      parseFloat(riskAmountEl.value) || 0;
-
-    var riskPct =
-      capital > 0
-        ? (riskAmount / capital) * 100
-        : 0;
-
-    $('risk-pct-echo').textContent =
-      fmt(riskPct,1) + '%';
-
-    var markerPos =
-      Math.min(100, riskPct);
-
-    $('risk-marker').style.left =
-      markerPos + '%';
-
-    if(capitalEchoEl){
-      capitalEchoEl.textContent =
-        curr + fmt(capital,0);
-    }
-
-    var slDistance = 0;
-    if(state.slMode === 'points'){
-      slDistance = parseFloat(slPointsEl.value) || 0;
-    } else {
-      var slPct = parseFloat(slPctEl.value) || 0;
-      slDistance = entry * (slPct/100);
-    }
-
-    var slPrice = null;
-    if(entry > 0 && slDistance > 0){
-      slPrice = state.side === 'long' ? entry - slDistance : entry + slDistance;
-    }
-
-    /*
-      Risk is SL loss BEFORE fees.
-      Total loss is SL loss + fees.
-
-      Example:
-      SL loss = ₹1,000
-      Fees = ₹50
-      Total loss = ₹1,050
-    */
-    var qty = 0;
-
-    if(slDistance > 0 && riskAmount > 0){
-      qty = riskAmount / slDistance;
-    }
-
-    var posValue = qty * entry;
-    var marginReq = lev > 0 ? posValue / lev : 0;
-    var feeTotal = qty * entry * commission * 2;
-    var totalLoss = riskAmount + feeTotal;
-    var effLev = capital > 0 ? posValue/capital : 0;
-    var minLevNeeded = effLev > 0 ? Math.max(1, Math.ceil(effLev)) : 0;
-
-    $('qty-out').textContent = qty ? fmt(qty, qty < 1 ? 5 : 4) : '0.0000';
-    $('qty-sub').textContent = 'Quantity (' + state.symbol.replace('USD','') + ') to trade';
-
-    $('pos-value').textContent = posValue ? curr + fmt(posValue,2) : '—';
-    $('margin-req').textContent = marginReq ? curr + fmt(marginReq,2) : '—';
-    $('sl-price').textContent = slPrice !== null ? curr + fmt(slPrice,2) : '—';
-    $('risk-out').textContent = riskAmount ? curr + fmt(riskAmount,2) : '—';
-    $('total-loss-out').textContent =
-      (riskAmount || feeTotal) ? curr + fmt(totalLoss,2) : '—';
-    $('fee-out').textContent = feeTotal ? curr + fmt(feeTotal,2) : '—';
-    $('eff-lev').textContent = minLevNeeded ? (minLevNeeded + 'x') + (minLevNeeded > state.maxLev ? ' (exceeds max)' : '') : '—';
-
-    var rRows = $('r-rows');
-    var multiples = [1,2,3,5,6,7];
-    var rows = '';
-    for(var i=0;i<multiples.length;i++){
-      var m = multiples[i];
-      var profit = riskAmount * m;
-      var ret = capital > 0 ? (profit/capital)*100 : 0;
-      rows += '<div class="r-row">'
-        + '<span class="rlabel">' + m + 'R</span>'
-        + '<span class="rprofit">' + (profit ? curr + fmt(profit,2) : '—') + '</span>'
-        + '<span class="rreturn">' + (capital>0 ? '+' + fmt(ret,1) + '%' : '—') + '</span>'
-        + '</div>';
-    }
-    rRows.innerHTML = rows;
-
-    var targetR = parseFloat(rrSlider.value) || 0;
-    $('rr-echo').textContent = fmt(targetR,1) + 'R';
-    var moveOut = $('move-out'), moveSub = $('move-sub');
-    if(qty > 0 && riskAmount > 0){
-      var targetProfit = riskAmount * targetR;
-      var movePoints = qty > 0 ? (targetProfit + feeTotal) / qty : 0;
-      if(entry > 0){
-        var movePct = (movePoints/entry)*100;
-        var tpPrice = state.side === 'long' ? entry + movePoints : entry - movePoints;
-        moveOut.textContent = fmt(movePoints,2) + ' pts (' + fmt(movePct,2) + '%)';
-        moveSub.textContent = 'TP around ' + curr + fmt(tpPrice,2) + ' for ' + fmt(targetR,1) + 'R (' + curr + fmt(targetProfit,2) + ')';
-      } else {
-        moveOut.textContent = fmt(movePoints,2) + ' pts';
-        moveSub.textContent = 'Entry price daalo % move aur TP price dekhne ke liye';
-      }
-    } else if(riskAmount > 0){
-      moveOut.textContent = '—';
-      moveSub.textContent = 'SL distance daalo — usse qty aur move dono nikalte hain';
-    } else {
-      moveOut.textContent = '—';
-      moveSub.textContent = 'Capital aur SL loss daalo pehle';
-    }
-
-    var warn = $('warn-box');
-    if(minLevNeeded > state.maxLev){
-      warn.className = 'warn show';
-      warn.textContent = 'Is risk% aur SL pe ' + minLevNeeded + 'x leverage chahiye, lekin ' + state.symbol + ' ka max ' + state.maxLev + 'x hai. Risk% kam karo ya SL distance badhao.';
-    } else if(capital > 0 && marginReq > capital){
-      warn.className = 'warn show';
-      warn.textContent = 'Margin required (' + curr + fmt(marginReq,2) + ') capital se zyada hai. Leverage badhao ya risk% kam karo.';
-    } else if(entry > 0 && slDistance === 0){
-      warn.className = 'warn show';
-      warn.textContent = 'SL distance daalo — bina SL ke position size calculate nahi ho sakta.';
-    } else if(capital === 0){
-      warn.className = 'warn show';
-      warn.textContent = 'Capital daalo calculation shuru karne ke liye.';
-    } else {
-      warn.className = 'warn';
-      warn.textContent = '';
-    }
+    const cfg=DATA[market][symbol]; const entry=+$('entry').value; const rawSL=+$('sl').value; const maxRisk=Math.max(0,+$('risk').value||0); const lev=Math.max(1,+$('levNum').value||1); const fee=Math.max(0,+$('fee').value||0); const rr=+$('rr').value; const dist=$('slMode').value==='percent'?entry*rawSL/100:rawSL; const rpc=Math.abs(dist*cfg.value); const qty=rpc>0?Math.floor(maxRisk/rpc):0; const actual=qty*rpc; const remain=Math.max(0,maxRisk-actual); const stop=entry?side==='long'?entry-dist:entry+dist:NaN; const target=entry?side==='long'?entry+dist*rr:entry-dist*rr:NaN; const pos=entry&&qty?qty*entry*cfg.value:NaN; const margin=pos/lev;
+    $('contractEcho').textContent=cfg.value+' '+cfg.unit;$('slEcho').textContent=$('slMode').value==='percent'?'%':'points';$('qtyOut').textContent=qty+' '+(market==='cfd'?'lot(s)':'contract(s)');$('distOut').textContent=isFinite(dist)?fmt(dist,dist<1?4:2):'—';$('rpcOut').textContent=isFinite(rpc)?'$'+fmt(rpc,2):'—';$('actualOut').textContent='$'+fmt(actual,2);$('remainOut').textContent='$'+fmt(remain,2);$('stopOut').textContent=isFinite(stop)?fmt(stop,Math.abs(stop)<1?6:2):'—';$('targetOut').textContent=isFinite(target)?fmt(target,Math.abs(target)<1?6:2):'—';$('posOut').textContent=isFinite(pos)?'$'+fmt(pos,2):'—';$('marginOut').textContent=isFinite(margin)?'$'+fmt(margin,2):'—';$('feeOut').textContent='$'+fmt(fee,2)+' optional';$('statusOut').textContent=rpc>maxRisk&&rpc>0?'⚠ 1 contract exceeds your risk limit':qty>0?'✓ WITHIN LIMIT · ACTUAL RISK $'+fmt(actual,2):'⚠ No whole contract fits this risk';$('statusOut').style.color=rpc>maxRisk&&rpc>0?'#ff5c5c':qty>0?'#3ddc84':'#f5a623';
+    let rrRisk=[25,50,75,100,125,150,175,200,250,300,400,500,750,1000].filter(x=>x<=Math.max(1000,maxRisk*2)); if(!rrRisk.includes(maxRisk))rrRisk.push(maxRisk);rrRisk=[...new Set(rrRisk)].sort((a,b)=>a-b);$('riskRows').innerHTML=rrRisk.map(r=>{let q=rpc?Math.floor(r/rpc):0,a=q*rpc,rem=Math.max(0,r-a);return '<div class="ttx-tr '+(q?'safe':'over')+'"><span>$'+fmt(r,0)+'</span><span>'+q+'</span><span>$'+fmt(a,2)+'</span><span>$'+fmt(rem,2)+'</span></div>'}).join('');
+    let near=[];for(let q=Math.max(0,qty-2);q<=qty+3;q++)if(q>=0)near.push(q);$('nearRows').innerHTML=near.map(q=>{let r=q*rpc,diff=maxRisk-r,ok=r<=maxRisk;return '<div class="ttx-tr '+(ok?'safe':'over')+'"><span>'+q+'</span><span>$'+fmt(r,2)+'</span><span>'+((diff>=0?'+':'')+fmt(diff,2))+'</span><span>'+(q===qty?'★ CLOSEST SAFE':ok?'✓ SAFE':'✕ OVER LIMIT')+'</span></div>'}).join('');
+    $('rRows').innerHTML=[.5,1,1.5,2,3,4,5,rr].filter((x,i,a)=>a.indexOf(x)===i).sort((a,b)=>a-b).map(r=>{let profit=actual*r,tp=entry?side==='long'?entry+dist*r:entry-dist*r:NaN;let ret=maxRisk?profit/maxRisk*100:0;return '<div class="ttx-tr"><span>'+r+'R</span><span>$'+fmt(profit,2)+'</span><span>'+fmt(tp,Math.abs(tp)<1?6:2)+'</span><span>'+fmt(ret,1)+'%</span></div>'}).join('');
   }
-
-  calc();
+  $('accountSelect').onchange=()=>{syncRisk();calc()};$('customRisk').oninput=()=>{syncRisk();calc()};$('risk').oninput=calc;$('entry').oninput=calc;$('sl').oninput=calc;$('slMode').onchange=calc;$('fee').oninput=calc;$('rr').oninput=()=>{$('rrEcho').textContent=$('rr').value+'R';calc()};$('lev').oninput=()=>{$('levNum').value=$('lev').value;$('levEcho').textContent=$('lev').value+'x';calc()};$('levNum').oninput=()=>{let cfg=DATA[market][symbol];let v=Math.min(cfg.maxLev,Math.max(1,+$('levNum').value||1));$('levNum').value=v;$('lev').value=v;$('levEcho').textContent=v+'x';calc()};$('longBtn').onclick=()=>{side='long';$('longBtn').classList.add('active');$('shortBtn').classList.remove('active');calc()};$('shortBtn').onclick=()=>{side='short';$('shortBtn').classList.add('active');$('longBtn').classList.remove('active');calc()};
+  marketTabs();renderInstruments();riskPresets();syncRisk();$('levEcho').textContent='10x';calc();
 })();
 </script>
 
-
-  </section>
-
-  <section id="alarm-view" class="app-view">
+</section>
+    <section id="alarm-view" class="app-view">
     <div class="alarm-app">
       
 
@@ -1618,9 +1314,65 @@ startTimeInput.disabled = startNowCheckbox.checked;
 
 
     </div>
-  </section>
-</div>
 
+  </section>
+
+  <section id="command-view" class="app-view">
+    <div class="command-app">
+      <p class="eyebrow">Trading operating system · control room</p>
+      <h1>Command Center</h1>
+      <p class="sub">Everything around the trade — without touching your position calculator.</p>
+
+      <div class="cmd-grid">
+        <div>
+          <div class="cmd-card">
+            <div class="cmd-title">Daily Dashboard</div><div class="cmd-sub">Track execution, P&L and discipline.</div>
+            <div class="cmd-stats"><div class="cmd-stat"><span>Trades</span><b id="dTrades">0</b></div><div class="cmd-stat"><span>Wins</span><b id="dWins">0</b></div><div class="cmd-stat"><span>Losses</span><b id="dLosses">0</b></div><div class="cmd-stat"><span>Net P&L</span><b id="dPnl">$0</b></div></div>
+            <div class="cmd-row"><input id="pnlInput" type="number" step="0.01" placeholder="P&L for this trade"><select id="resultSelect"><option value="win">Win</option><option value="loss">Loss</option><option value="be">Break-even</option></select><button class="cmd-btn" id="addTrade">+ Add</button><button class="cmd-btn" id="resetDay">Reset</button></div>
+          </div>
+
+          <div class="cmd-card" style="margin-top:16px"><div class="cmd-title">Pre-Trade Kill Switch</div><div class="cmd-sub">All 7 must be checked before the green light.</div><div class="score" id="checkScore">0 / 7</div><div class="meter"><i id="checkMeter"></i></div>
+            <label class="check"><input type="checkbox"> HTF bias is clear</label><label class="check"><input type="checkbox"> Setup matches my strategy</label><label class="check"><input type="checkbox"> Entry is at my planned level</label><label class="check"><input type="checkbox"> Stop-loss is defined before entry</label><label class="check"><input type="checkbox"> Risk is within today's limit</label><label class="check"><input type="checkbox"> No revenge / FOMO trade</label><label class="check"><input type="checkbox"> I know exactly where I exit</label>
+          </div>
+
+          <div class="cmd-card" style="margin-top:16px"><div class="cmd-title">Mini Trade Journal</div><div class="cmd-sub">Saved locally in your browser.</div><div class="cmd-row"><input id="jSetup" placeholder="Setup / instrument"><input id="jNote" placeholder="One-line lesson"><button class="cmd-btn" id="addJournal">Save</button></div><table class="journal-table"><thead><tr><th>Time</th><th>Setup</th><th>Lesson</th></tr></thead><tbody id="journalBody"></tbody></table></div>
+        </div>
+
+        <div>
+          <div class="cmd-card">
+            <div class="cmd-title">Market Sessions · IST / New York / UTC</div><div class="cmd-sub">Live clocks + DST-aware session schedule.</div>
+            <div class="session-clocks"><div><span>IST</span><b id="istClock">--:--:--</b><small>Kolkata</small></div><div><span>NEW YORK</span><b id="nyClock">--:--:--</b><small>ET</small></div><div><span>UTC</span><b id="utcClock">--:--:--</b><small>Universal</small></div></div>
+            <div class="session-grid"><div class="session" data-session="asia"><b>ASIA</b><small>05:30–14:30 IST</small><em>00:00–09:00 UTC</em></div><div class="session" data-session="london"><b>LONDON</b><small id="londonIst">13:30–22:30 IST</small><em id="londonUtc">08:00–17:00 UTC</em></div><div class="session" data-session="newyork"><b>NEW YORK</b><small id="nyIst">18:30–03:30 IST</small><em id="nyUtc">13:00–22:00 UTC</em></div><div class="session" data-session="overlap"><b>⚡ LDN × NY</b><small id="overlapIst">18:30–22:30 IST</small><em id="overlapUtc">13:00–17:00 UTC</em></div></div>
+            <div class="session-focus"><strong id="sessionFocus">—</strong><span id="sessionHint">Loading market session...</span></div>
+          </div>
+
+          <div class="cmd-card" style="margin-top:16px"><div class="cmd-title">Trading Utilities</div><div class="cmd-sub">Small tools that reduce avoidable mistakes.</div><div class="utility-grid"><button class="util" onclick="ttCountdown()">⏱ Trade timer<br><small>15 min focus</small></button><button class="util" onclick="ttRiskGuard()">🛡 Risk guard<br><small>Daily loss check</small></button><button class="util" onclick="ttBreakeven()">🎯 R calculator<br><small>Quick target</small></button><button class="util" onclick="ttClearChecks()">↻ Reset checklist<br><small>Fresh setup</small></button></div></div>
+
+          <div class="cmd-card" style="margin-top:16px"><div class="cmd-title">Trader Notes</div><div class="cmd-sub">Persistent scratchpad — auto-saves.</div><textarea id="traderNotes" class="cmd-note" placeholder="Bias, levels, mistakes, ideas..."></textarea></div>
+          <div class="cmd-card" style="margin-top:16px"><div class="cmd-title">Quick Shortcuts</div><div class="shortcut"><span>Position calculator</span><kbd>1</kbd></div><div class="shortcut"><span>Interval alarm</span><kbd>2</kbd></div><div class="shortcut"><span>Command center</span><kbd>3</kbd></div><div class="shortcut"><span>Clear notes</span><kbd>Ctrl + Shift + X</kbd></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const key='tt-command';
+  let data=JSON.parse(localStorage.getItem(key)||'null')||{trades:0,wins:0,losses:0,pnl:0,journal:[]};
+  function save(){localStorage.setItem(key,JSON.stringify(data));render()}
+  function render(){ $('dTrades').textContent=data.trades; $('dWins').textContent=data.wins; $('dLosses').textContent=data.losses; $('dPnl').textContent=(data.pnl>=0?'+':'')+'$'+data.pnl.toFixed(2); $('dPnl').className=data.pnl<0?'negative':'positive'; $('journalBody').innerHTML=data.journal.slice(-8).reverse().map(x=>`<tr><td>${x.t}</td><td>${esc(x.s)}</td><td>${esc(x.n)}</td></tr>`).join('')||'<tr><td colspan="3" style="color:var(--text-faint)">No journal entries yet</td></tr>'; }
+  function esc(x){return String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+  $('addTrade').onclick=()=>{let p=+$('pnlInput').value||0,r=$('resultSelect').value;data.trades++;if(r==='win')data.wins++;if(r==='loss')data.losses++;data.pnl+=p;$('pnlInput').value='';save()};
+  $('resetDay').onclick=()=>{if(confirm('Reset today’s dashboard?')){data={trades:0,wins:0,losses:0,pnl:0,journal:data.journal};save()}};
+  $('addJournal').onclick=()=>{let s=$('jSetup').value.trim(),n=$('jNote').value.trim();if(!s&&!n)return;data.journal.push({t:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),s,n});$('jSetup').value='';$('jNote').value='';save()};
+  document.querySelectorAll('#command-view .check input').forEach(x=>x.onchange=()=>{let a=[...document.querySelectorAll('#command-view .check input')],c=a.filter(z=>z.checked).length;$('checkScore').textContent=c+' / '+a.length;$('checkMeter').style.width=(c/a.length*100)+'%' });
+  const notes=$('traderNotes');notes.value=localStorage.getItem('tt-notes')||'';notes.oninput=()=>localStorage.setItem('tt-notes',notes.value);
+  function clock(){let d=new Date();let lc=document.getElementById('liveClock'),ld=document.getElementById('liveDate');if(lc)lc.textContent=d.toLocaleTimeString();if(ld)ld.textContent=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'short',day:'numeric'});render();};setInterval(clock,1000);clock();render();
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='x'){notes.value='';localStorage.removeItem('tt-notes')}});
+})();
+</script>
 <script>
 (function(){
   const root = document.documentElement;
@@ -1650,5 +1402,46 @@ startTimeInput.disabled = startNowCheckbox.checked;
 })();
 </script>
 
-</body>
+<style id="session-upgrade-css">
+.session-clocks{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.session-clocks>div{border:1px solid var(--border-soft);border-radius:11px;padding:12px;background:var(--panel)}.session-clocks span,.session-clocks small{display:block;color:var(--text-faint);font-size:10px}.session-clocks b{display:block;font:600 21px "IBM Plex Mono";margin:6px 0}.session-grid .session{position:relative}.session-grid .session em{display:block;font-style:normal;font-size:9px;color:var(--text-faint);margin-top:4px}.session.active{border-color:var(--teal);background:rgba(23,195,178,.07)}.session.active b{color:var(--teal)}.session-focus{margin-top:11px;padding:11px 12px;border:1px dashed var(--border-soft);border-radius:10px}.session-focus strong{display:block;color:var(--teal);font-size:12px}.session-focus span{display:block;color:var(--text-faint);font-size:10px;margin-top:3px}.utility-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.util{border:1px solid var(--border-soft);background:var(--panel);color:var(--text);padding:12px;border-radius:10px;text-align:left;cursor:pointer;font-weight:600}.util small{color:var(--text-faint);font-weight:400}.util:hover{border-color:var(--teal)}@media(max-width:760px){.session-clocks{grid-template-columns:1fr}.utility-grid{grid-template-columns:1fr 1fr}}
+</style><script id="session-upgrade-js">
+(function(){
+  const $=id=>document.getElementById(id);
+  function parts(d,tz){
+    const a=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(d);
+    return {h:+a.find(x=>x.type==='hour').value%24,m:+a.find(x=>x.type==='minute').value};
+  }
+  function mins(d,tz){const p=parts(d,tz);return p.h*60+p.m}
+  function time(d,tz){return new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(d)}
+  function isDst(d,tz){const z=new Intl.DateTimeFormat('en-US',{timeZone:tz,timeZoneName:'short'}).formatToParts(d).find(x=>x.type==='timeZoneName');return z && (z.value==='EDT'||z.value==='BST')}
+  function rangeLabel(open,close){const f=x=>String(Math.floor((x%1440)/60)).padStart(2,'0')+':'+String(x%60).padStart(2,'0');return f(open)+'–'+f(close)}
+  function tick(){
+    const d=new Date(), u=mins(d,'UTC'), londonDst=isDst(d,'Europe/London'), nyDst=isDst(d,'America/New_York');
+    // Forex-style session windows. Asia is Tokyo 09:00–18:00 local (00:00–09:00 UTC).
+    const asiaO=0, asiaC=9*60;
+    const lonO=londonDst?7*60:8*60, lonC=lonO+9*60;
+    const nyO=nyDst?13*60+30:14*60+30, nyC=nyO+6*60+30;
+    const overlapO=Math.max(lonO,nyO), overlapC=Math.min(lonC,nyC);
+    const asia=u>=asiaO&&u<asiaC, london=u>=lonO&&u<lonC, ny=u>=nyO&&u<nyC, overlap=u>=overlapO&&u<overlapC;
+    if($('istClock'))$('istClock').textContent=time(d,'Asia/Kolkata');
+    if($('nyClock'))$('nyClock').textContent=time(d,'America/New_York');
+    if($('utcClock'))$('utcClock').textContent=time(d,'UTC');
+    [['asia',asia],['london',london],['newyork',ny],['overlap',overlap]].forEach(([name,on])=>{const row=document.querySelector('[data-session="'+name+'"]');if(row)row.classList.toggle('active',on)});
+    if($('sessionFocus'))$('sessionFocus').textContent=overlap?'⚡ LONDON × NEW YORK OVERLAP':ny?'🇺🇸 NEW YORK SESSION':london?'🇬🇧 LONDON SESSION':asia?'🇯🇵 ASIA SESSION':'QUIET / BETWEEN SESSIONS';
+    if($('sessionHint'))$('sessionHint').textContent=overlap?'High-liquidity overlap · watch your setup rules.':ny?'US session is active.':london?'London session is active.':asia?'Asia session is active.':'No major FX session active.';
+    const ist=x=>rangeLabel(x+330,x===nyO?nyC+330:x===lonO?lonC+330:x+330); // overwritten below for clarity
+    if($('londonIst'))$('londonIst').textContent=rangeLabel(lonO+330,lonC+330)+' IST';
+    if($('londonUtc'))$('londonUtc').textContent=rangeLabel(lonO,lonC)+' UTC';
+    if($('nyIst'))$('nyIst').textContent=rangeLabel((nyO+330)%1440,(nyC+330)%1440)+' IST';
+    if($('nyUtc'))$('nyUtc').textContent=rangeLabel(nyO,nyC)+' UTC';
+    if($('overlapIst'))$('overlapIst').textContent=rangeLabel((overlapO+330)%1440,(overlapC+330)%1440)+' IST';
+    if($('overlapUtc'))$('overlapUtc').textContent=rangeLabel(overlapO,overlapC)+' UTC';
+  }
+  tick();setInterval(tick,1000);
+  window.ttCountdown=()=>{let end=Date.now()+900000;const id=setInterval(()=>{let s=Math.max(0,Math.ceil((end-Date.now())/1000));if(s===0){clearInterval(id);alert('15-minute trade focus complete.');}},1000);alert('15-minute trade focus started.');};
+  window.ttRiskGuard=()=>{let d=prompt('Your daily max loss ($):','400'),r=prompt('Risk per trade ($):','200');if(d&&r)alert(+r<=+d/2?'✓ One trade ≤ 50% of daily loss limit.':'⚠ Aggressive: one trade is > 50% of daily loss limit.');};
+  window.ttBreakeven=()=>{let e=prompt('Entry price:'),r=prompt('Risk distance (points):'),m=prompt('R multiple target:','3'),side=prompt('Direction (LONG/SHORT):','LONG');if(e&&r&&m){let target=side.toUpperCase()==='SHORT'?(+e-(+r*+m)):(+e+(+r*+m));alert('Target price: '+target);}};
+  window.ttClearChecks=()=>{document.querySelectorAll('#command-view .check input').forEach(x=>x.checked=false);const s=$('checkScore'),m=$('checkMeter');if(s)s.textContent='0 / 7';if(m)m.style.width='0%';};
+})();
+</script></body>
 </html>
